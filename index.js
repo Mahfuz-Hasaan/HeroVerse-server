@@ -10,7 +10,6 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-console.log(process.env.DB_PASS);
 
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.pxz4dvv.mongodb.net/?retryWrites=true&w=majority`;
@@ -28,12 +27,27 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+    const toysCollection = client.db('heroToys').collection('addedToys');
+
+    //addToysCollection
+    app.post('/addedToys', async(req,res) =>{
+        const toys = req.body;
+        console.log(toys);
+        const result = await toysCollection.insertOne(toys)
+        res.send(result)
+    })
+    app.get('/addedToys', async(req,res) =>{
+        const cursor = toysCollection.find();
+        const result = await cursor.toArray();
+        res.send(result)
+    })
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
