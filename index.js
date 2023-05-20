@@ -45,17 +45,20 @@ async function run() {
       const result = await toysCollection.insertOne(toys);
       res.send(result);
     });
+
+    
     app.get("/addedToys", async (req, res) => {
       const cursor = toysCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
 
-    app.put("/addedToys/:id", async(req,res) =>{
-        const updateToys = req.body;
+    app.get("/addedToys/:id", async(req,res) =>{
+        const id = req.params.id;
+        const query = { _id: new ObjectId(id)}
+        const result = await toysCollection.findOne(query);
+        res.send(result);
     })
-
-
     //singleDataCollection
     app.get("/addedToys/:id", async (req, res) => {
       const id = req.params.id;
