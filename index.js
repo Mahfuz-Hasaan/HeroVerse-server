@@ -27,18 +27,17 @@ async function run() {
     await client.connect();
     const toysCollection = client.db("heroToys").collection("addedToys");
 
-   
     //specific data show
-    app.get ("/addedToys", async (req,res) =>{
-        console.log(req.query);
-        let query = {};
-        if(req.query?.email){
-            query = {email: req.query.email}
-        }
-        const result = await toysCollection.find(query).toArray();
-        res.send(result);
-    })
-    
+    app.get("/addedToys", async (req, res) => {
+      console.log(req.query);
+      let query = {};
+      if (req.query?.email) {
+        query = { email: req.query.email };
+      }
+      const result = await toysCollection.find(query).toArray();
+      res.send(result);
+    });
+
     //addToysCollection
     app.post("/addedToys", async (req, res) => {
       const toys = req.body;
@@ -53,17 +52,24 @@ async function run() {
     });
 
     //singleDataCollection
-    app.get("/addedToys/:id", async(req,res) => {
-    const id = req.params.id;
-    const query = {_id: new ObjectId(id)}
-    const options = {
-        projection: { details: 1, price: 1, quantity: 1, rating:1, sellerName:1 ,subCategory: 1, toyImage: 1, toyName: 1},
+    app.get("/addedToys/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const options = {
+        projection: {
+          details: 1,
+          price: 1,
+          quantity: 1,
+          rating: 1,
+          sellerName: 1,
+          subCategory: 1,
+          toyImage: 1,
+          toyName: 1,
+        },
       };
-    const result = await toysCollection.findOne(query,options);
-    res.send(result);
-})
-
-   
+      const result = await toysCollection.findOne(query, options);
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
@@ -78,9 +84,9 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send("heroverse is ruiing");
+  res.send("hero verse is running");
 });
 
 app.listen(port, () => {
-  console.log(`heroverse is ruiing on port ${port}`);
+  console.log(`hero verse is running on port ${port}`);
 });
