@@ -51,6 +51,11 @@ async function run() {
       res.send(result);
     });
 
+    app.put("/addedToys/:id", async(req,res) =>{
+        const updateToys = req.body;
+    })
+
+
     //singleDataCollection
     app.get("/addedToys/:id", async (req, res) => {
       const id = req.params.id;
@@ -70,6 +75,8 @@ async function run() {
       const result = await toysCollection.findOne(query, options);
       res.send(result);
     });
+
+   
 
     //deleteData
     app.delete('/addedToys/:id', async(req,res) => {
