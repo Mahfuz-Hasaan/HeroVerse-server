@@ -36,14 +36,7 @@ async function run() {
       res.send(result);
     });
 
-    //addToysCollection
-    app.post("/addedToys", async (req, res) => {
-      const toys = req.body;
-      console.log(toys);
-      const result = await toysCollection.insertOne(toys);
-      res.send(result);
-    });
-
+  
     
     app.get("/addedToys", async (req, res) => {
       const cursor = toysCollection.find();
@@ -78,7 +71,14 @@ async function run() {
       res.send(result);
     });
 
-    
+      //addToysCollection
+      app.post("/addedToys", async (req, res) => {
+        const toys = req.body;
+        console.log(toys);
+        const result = await toysCollection.insertOne(toys);
+        res.send(result);
+      });
+  
 
    app.put('/addedToys/:id', async(req,res)=>{
     const id = req.params.id;
