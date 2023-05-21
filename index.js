@@ -29,7 +29,6 @@ async function run() {
 
     //specific data show
     app.get("/addedToys", async (req, res) => {
-      console.log(req.query);
       let query = {};
       if (req.query?.email) {
         query = { email: req.query.email };
@@ -59,6 +58,7 @@ async function run() {
         const result = await toysCollection.findOne(query);
         res.send(result);
     })
+
     //singleDataCollection
     app.get("/addedToys/:id", async (req, res) => {
       const id = req.params.id;
@@ -79,7 +79,30 @@ async function run() {
       res.send(result);
     });
 
-   
+    
+
+   app.put('/addedToys/:id', async(req,res)=>{
+    const id = req.params.id;
+    const filter = { _id: new ObjectId(id) };
+    const options = { upsert: true };
+    const updateDoc = req.body;
+    const updDoc = {
+        $set: {
+            sellerName: updateDoc.sellerName,
+            toyName: updateDoc.toyName,
+            subCategory: updateDoc.subCategory,
+            price: updateDoc.price,
+            rating: updateDoc.rating,
+            quantity: updateDoc.quantity,
+            details: updateDoc.details,
+            toyImage: updateDoc.toyImage,
+        },
+      };
+
+      const result = await toysCollection.updateOne(filter,updDoc,options)
+      res.send(result)
+
+   })
 
     //deleteData
     app.delete('/addedToys/:id', async(req,res) => {
